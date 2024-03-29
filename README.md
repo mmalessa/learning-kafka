@@ -4,8 +4,8 @@ Made to learn
 ## Kickstart
 ```shell
 make build
-make init
 make up
+make init
 make shell
 make help
 make down
