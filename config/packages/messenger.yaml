@@ -1,0 +1,33 @@
+framework:
+    messenger:
+
+        transports:
+            order_producer:
+                dsn: '%env(KAFKA_DSN)%'
+                options:
+                    flushTimeout: 10000
+                    flushRetries: 5
+                    topic:
+                        name: 'order_messages'
+                    metadata.broker.list: '%env(KAFKA_BROKERS)%'
+#                    kafka_conf:
+
+
+            order_consumer:
+                dsn: '%env(KAFKA_DSN)%'
+                options:
+                    commitAsync: true
+                    receiveTimeout: 10000
+                    topic:
+                        name: 'order_messages'
+                    kafka_conf:
+                        enable.auto.offset.store: 'false'
+                        group.id: 'my-group-id' # should be unique per consumer
+                    topic_conf:
+                        auto.offset.reset: 'earliest'
+
+        routing:
+            'App\Message\DoSomething': order_producer
+
+#        serializer:
+#            default_serializer: messenger.transport.symfony_serializer
