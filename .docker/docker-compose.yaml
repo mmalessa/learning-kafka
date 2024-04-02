@@ -21,32 +21,15 @@ services:
     extra_hosts:
         - host.docker.internal:host-gateway
 
-  zookeeper:
-    image: 'bitnami/zookeeper:latest'
-    container_name: ${COMPOSE_PROJECT_NAME}-zookeeper
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-      ALLOW_ANONYMOUS_LOGIN: yes
-    ports:
-      - 2181:2181
-    networks:
-      devapp:
-
   kafka:
     build:
       context: kafka
     container_name: ${COMPOSE_PROJECT_NAME}-kafka
-    depends_on:
-      - zookeeper
     ports:
       - 9092:9092
     volumes:
-#      - kafka_config:/opt/kafka/config
-#      - kafka_config:/opt/kafka/logs
       - kafka_data:/var/lib/kafka/data
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_NODE_ID: 1
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
       KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT_HOST://kafka:9092,PLAINTEXT://kafka:19092'
@@ -60,7 +43,6 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-#      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
       KAFKA_LOG_DIRS: '/var/lib/kafka/data'
     networks:
       devapp:
