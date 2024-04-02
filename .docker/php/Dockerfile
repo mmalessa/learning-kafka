@@ -4,7 +4,7 @@ ARG COMPOSER_VERSION=2.7.2
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=$COMPOSER_VERSION
 
 RUN apt-get update \
-    && apt-get install -y curl git unzip librabbitmq-dev libyaml-dev librdkafka-dev
+    && apt-get install -y curl git iputils-ping unzip librabbitmq-dev libyaml-dev librdkafka-dev
 
 #https://arnaud.le-blanc.net/php-rdkafka-doc/phpdoc/rdkafka.setup.html
 RUN pecl install amqp-2.1.2 yaml-2.2.3 rdkafka

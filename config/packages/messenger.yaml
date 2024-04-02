@@ -2,32 +2,49 @@ framework:
     messenger:
 
         transports:
-            order_producer:
+            topic_producer:
                 dsn: '%env(KAFKA_DSN)%'
                 options:
                     flushTimeout: 10000
                     flushRetries: 5
                     topic:
-                        name: 'order_messages'
+                        name: '%env(KAFKA_TOPIC)%'
                     metadata.broker.list: '%env(KAFKA_BROKERS)%'
-#                    kafka_conf:
+#                    topic_conf:
+#                        retention.ms: '-1'
 
 
-            order_consumer:
+            topic_consumer:
                 dsn: '%env(KAFKA_DSN)%'
                 options:
                     commitAsync: true
                     receiveTimeout: 10000
                     topic:
-                        name: 'order_messages'
+                        name: '%env(KAFKA_TOPIC)%'
                     kafka_conf:
                         enable.auto.offset.store: 'false'
-                        group.id: 'my-group-id' # should be unique per consumer
+                        group.id: 'my-group-id'
                     topic_conf:
                         auto.offset.reset: 'earliest'
 
+            slurping_consumer:
+                dsn: '%env(KAFKA_DSN)%'
+                options:
+                    commitAsync: true
+                    receiveTimeout: 3000
+                    topic:
+                        name: '%env(KAFKA_TOPIC)%'
+                    kafka_conf:
+                        enable.auto.offset.store: 'false'
+                        group.id: 'slurping-group-id'
+                    topic_conf:
+                        auto.offset.reset: 'earliest'
+#                        log.cleanup.policy = [compact]
+#                        log.retention.bytes = -1
+#                        log.retention.ms = -1
+
         routing:
-            'App\Message\DoSomething': order_producer
+            'App\Message\DoSomething': topic_producer
 
 #        serializer:
 #            default_serializer: messenger.transport.symfony_serializer

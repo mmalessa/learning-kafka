@@ -14,8 +14,7 @@ make down
 ## GUI
 AKHQ: `http://localhost:8080`
 
-## Tamtakie
-```shell
-make consume
-make produce
-```
+## Useful Links
+- https://github.com/confluentinc/librdkafka/blob/master/CONFIGURATION.md
+- https://www.baeldung.com/kafka-message-retention
+- https://www.kadeck.com/blog/how-to-reset-consumer-offsets-in-apache-kafka

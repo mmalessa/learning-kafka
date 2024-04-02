@@ -10,10 +10,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand(
-    name: 'app:dispatch-message',
+    name: 'app:messenger-dispatch',
     description: 'Dispatch message'
 )]
-class DispatchMessageCommand extends Command
+class MessengerDispatchCommand extends Command
 {
     public function __construct(
         private readonly MessageBusInterface $bus,

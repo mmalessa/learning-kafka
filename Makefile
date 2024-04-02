@@ -58,3 +58,20 @@ consumer-groups: ## Display list of consumer group
 
 consumer-group: ## Describe existing consumer group
 	$(DC) exec kafka kafka-consumer-groups.sh --describe --bootstrap-server $(KAFKA_SERVER) --group $(filter-out $@,$(MAKECMDGOALS))
+
+### App kafka
+.PHONY: init-topic
+init-topic:
+	@$(DC) exec kafka sh -c "\
+		kafka-topics.sh --bootstrap-server $(KAFKA_SERVER) \
+			--create --topic $(KAFKA_TOPIC) --if-not-exists --partitions 1 --replication-factor 1 \
+		&& kafka-configs.sh --bootstrap-server $(KAFKA_SERVER) \
+			--alter --topic $(KAFKA_TOPIC) --add-config retention.ms=-1 \
+	"
+
+.PHONY: reset-topic-offset
+reset-topic-offset:
+	@$(DC) exec kafka sh -c "\
+		kafka-consumer-groups.sh --bootstrap-server $(KAFKA_SERVER) \
+			--group test-consumer-1 --reset-offsets --to-earliest --topic $(KAFKA_TOPIC) -execute\
+	"
