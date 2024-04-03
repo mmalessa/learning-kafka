@@ -6,9 +6,22 @@ Made to learn
 make build
 make up
 make init
-make shell
-make help
+
+make go-consume
+make php-consume
+
+make go-produce
+make php-produce
+
 make down
+
+```
+
+Other
+```shell
+make help
+make php-shell
+make go-shell
 ```
 
 ## GUI

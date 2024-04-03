@@ -24,6 +24,7 @@ class MessengerDispatchCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $output->writeln("Not ready yet...");
         $id = rand(1, 100000);
         $timestamp = date('Y-m-d H:i:s');
         $textLength = rand(3, 20);

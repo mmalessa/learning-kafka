@@ -7,6 +7,7 @@ services:
       args:
           - APP_USER_ID
     container_name: ${COMPOSE_PROJECT_NAME}-php
+    restart: on-failure
     user: ${APP_USER_ID}:${APP_GROUP_ID}
     volumes:
       - ../:/app/
@@ -21,10 +22,26 @@ services:
     extra_hosts:
         - host.docker.internal:host-gateway
 
+  go:
+    build:
+      context: go
+      args:
+        - APP_USER_ID
+    container_name: ${COMPOSE_PROJECT_NAME}-go
+    restart: on-failure
+    tty: true
+    volumes:
+      - ../:/go/src/app
+      - gopkg:/go/pkg
+      - gobin:/go/bin
+    networks:
+      devapp:
+
   kafka:
     build:
       context: kafka
     container_name: ${COMPOSE_PROJECT_NAME}-kafka
+    restart: on-failure
     ports:
       - 9092:9092
     volumes:
@@ -50,6 +67,7 @@ services:
   akhq:
     image: tchiotludo/akhq
     container_name: ${COMPOSE_PROJECT_NAME}-akhq
+    restart: on-failure
     environment:
       AKHQ_CONFIGURATION: |
         akhq:
@@ -73,6 +91,7 @@ services:
   schema-registry:
     image: confluentinc/cp-schema-registry
     container_name: ${COMPOSE_PROJECT_NAME}-schema-registry
+    restart: on-failure
     depends_on:
       - kafka
     environment:
@@ -92,3 +111,7 @@ volumes:
     name: ${COMPOSE_PROJECT_NAME}-appuser-home
   kafka_data:
     name: ${COMPOSE_PROJECT_NAME}-kafka-data
+  gopkg:
+    name: ${COMPOSE_PROJECT_NAME}-gopkg
+  gobin:
+    name: ${COMPOSE_PROJECT_NAME}-gobin

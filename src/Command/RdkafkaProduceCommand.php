@@ -43,7 +43,7 @@ class RdkafkaProduceCommand extends Command
 
         $producer = new Producer($conf);
 
-        $messagePayload = 'Message content';
+        $messagePayload = sprintf('Random word from PHP: %s', $this->getRandomWord(rand(4,10)));
         $messageKey = 'test-key-1';
         $messageHeaders = [];
 
@@ -65,5 +65,11 @@ class RdkafkaProduceCommand extends Command
         }
 
         return Command::SUCCESS;
+    }
+
+    private function getRandomWord($len = 10): string {
+        $word = array_merge(range('a', 'z'), range('A', 'Z'));
+        shuffle($word);
+        return substr(implode($word), 0, $len);
     }
 }

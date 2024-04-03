@@ -23,8 +23,8 @@ class RdkafkaConsumeCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $conf = new Conf();
-        $conf->set('client.id', 'test-consumer');
-        $conf->set('group.id', 'test-consumer-1');
+        $conf->set('client.id', 'php-consumer');
+        $conf->set('group.id', 'php-consumer-1');
         $conf->set('metadata.broker.list', 'kafka:9092');
         $conf->set('enable.auto.commit', 'false');
         $conf->set('auto.offset.reset', 'earliest');
@@ -37,17 +37,17 @@ class RdkafkaConsumeCommand extends Command
             $message = $consumer->consume(10000);
 
             if (RD_KAFKA_RESP_ERR__PARTITION_EOF === $message->err) {
-                echo "partition EOF\n";
+//                echo "partition EOF\n";
                 continue;
             } elseif (RD_KAFKA_RESP_ERR__TIMED_OUT === $message->err) {
-                echo "waiting...\n";
+//                echo "waiting...\n";
                 continue;
             } elseif ( (RD_KAFKA_RESP_ERR_NO_ERROR !== $message->err)) {
                 echo rd_kafka_err2str($message->err) . PHP_EOL;
                 continue;
             }
 
-            print_r($message);
+            printf("Message on %s[%d]@%d: %s\n", $message->topic_name, $message->partition, $message->offset, $message->payload);
             $consumer->commit($message);
         }
 
