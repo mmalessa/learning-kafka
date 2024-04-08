@@ -26,5 +26,5 @@ RUN pecl install xdebug-3.3.1 \
 WORKDIR "/app"
 
 ARG APP_USER_ID
-RUN useradd -s /bin/bash -u ${APP_USER_ID} appuser
+RUN useradd -s /bin/bash -u ${APP_USER_ID} -m appuser
 USER appuser
