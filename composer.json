@@ -23,8 +23,8 @@
     },
     "repositories": [
         {
-            "type": "git",
-            "url": "https://github.com/mmalessa/messenger-kafka.git"
+            "type": "path",
+            "url": "./mmalessa/messenger-kafka"
         }
     ],
     "config": {

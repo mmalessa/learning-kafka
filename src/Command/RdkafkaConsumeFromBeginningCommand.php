@@ -27,7 +27,7 @@ class RdkafkaConsumeFromBeginningCommand extends Command
 
         $conf = new Conf();
         $conf->set('client.id', 'php-consumer');
-        $conf->set('group.id', 'php-consumer-from-begining');
+        $conf->set('group.id', 'php-consumer-from-beginning');
         $conf->set('metadata.broker.list', 'kafka:9092');
         $conf->set('enable.auto.commit', 'false');
         $conf->set('auto.offset.reset', 'earliest');
