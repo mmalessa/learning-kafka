@@ -1,6 +1,6 @@
 {
     "koco/messenger-kafka": {
-        "version": "dev-symfony7"
+        "version": "v0.18"
     },
     "nyholm/psr7": {
         "version": "1.8",

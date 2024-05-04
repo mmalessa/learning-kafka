@@ -13,6 +13,7 @@ services:
       - ../:/app/
       - ./php/php.ini:/usr/local/etc/php/conf.d/app-overrides.ini
       - appuser_home:/home/appuser
+      - ~/.ssh:/home/appuser/.ssh
     environment:
       - PHP_IDE_CONFIG
     working_dir: /app
