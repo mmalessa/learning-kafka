@@ -65,27 +65,19 @@ services:
     networks:
       devapp:
 
-  akhq:
-    image: tchiotludo/akhq
-    container_name: ${COMPOSE_PROJECT_NAME}-akhq
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: ${COMPOSE_PROJECT_NAME}-kafka-ui
     restart: on-failure
-    environment:
-      AKHQ_CONFIGURATION: |
-        akhq:
-          connections:
-            docker-kafka-server:
-              properties:
-                bootstrap.servers: "kafka:9092"
-              schema-registry:
-                url: "http://schema-registry:8085"
-              connect:
-                - name: "connect"
-                  url: "http://connect:8083"
-    ports:
-      - 8080:8080
-    links:
+    depends_on:
       - kafka
       - schema-registry
+    environment:
+      DYNAMIC_CONFIG_ENABLED: 'true'
+    ports:
+      - 8080:8080
+    volumes:
+      - ./kafka-ui/config.yaml:/etc/kafkaui/dynamic_config.yaml
     networks:
       devapp:
 
