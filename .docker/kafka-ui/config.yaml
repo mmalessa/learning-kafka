@@ -6,7 +6,7 @@ kafka:
       name: local
       properties: {}
       readOnly: false
-      schemaRegistry: http://schema-registry:8985
+      schemaRegistry: http://schema-registry:8085
 rbac:
   roles: []
 webclient: {}
