@@ -25,11 +25,22 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\SchemaRegistry\SchemaRegistryFactoryInterface:
-        alias: App\SchemaRegistry\SimpleSchemaRegistryFactory
 
-    App\SchemaRegistry\SimpleSchemaRegistryFactory:
+    App\SchemaRegistry\SchemaRegistrySchemaStorage:
         arguments:
-            $schemaRegistryUri: '%env(SCHEMA_REGISTRY_URI)%'
-            $schemaRegistryUsername: '%env(SCHEMA_REGISTRY_USERNAME)%'
-            $schemaRegistryPassword: '%env(SCHEMA_REGISTRY_PASSWORD)%'
+            $httpClient: '@app.schema_registry.http_client'
+
+    app.schema_registry.http_client:
+        class: GuzzleHttp\Client
+        arguments:
+            $config:
+                base_uri: '%env(SCHEMA_REGISTRY_URI)%'
+
+#    App\SchemaRegistry\SchemaRegistryFactoryInterface:
+#        alias: App\SchemaRegistry\SimpleSchemaRegistryFactory
+#
+#    App\SchemaRegistry\SimpleSchemaRegistryFactory:
+#        arguments:
+#            $schemaRegistryUri: '%env(SCHEMA_REGISTRY_URI)%'
+#            $schemaRegistryUsername: '%env(SCHEMA_REGISTRY_USERNAME)%'
+#            $schemaRegistryPassword: '%env(SCHEMA_REGISTRY_PASSWORD)%'
